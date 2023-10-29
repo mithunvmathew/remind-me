@@ -18,19 +18,28 @@ class QuartzJobService(
         jobDataMap["activityTime"] = reminder.activityTime
 
         val jobDetail = JobBuilder.newJob()
-            .withIdentity(UUID.randomUUID().toString())
+            .withIdentity(reminder.id.toString())
             .setJobData(jobDataMap)
             .withDescription("custom reminder job")
             .ofType(ReminderExecutionJob::class.java)
             .storeDurably()
             .build()
         val trigger: Trigger = TriggerBuilder.newTrigger()
+            .withIdentity(reminder.id.toString())
             .forJob(jobDetail)
             .startAt(Date.from(reminder.reminderTime))
             .withDescription("custom reminder job trigger.")
             .build()
-        scheduler.scheduleJob(jobDetail, trigger);
+        scheduler.scheduleJob(jobDetail, trigger)
+
         println("custom reminder scheduled :${reminder.subject}")
 
     }
+
+    fun deleteCustomScheduledJob(id :UUID) {
+        scheduler.unscheduleJob(TriggerKey(id.toString()))
+        println("Trigger is unscheduled...!!")
+        scheduler.deleteJob(JobKey(id.toString()))
+    }
+
 }

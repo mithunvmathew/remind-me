@@ -47,7 +47,10 @@ class ReminderService(
         }
     }
 
-    fun deleteReminder(reminderId: UUID) = reminderRepository.deleteById(reminderId)
+    fun deleteReminder(reminderId: UUID) {
+        quartzJobService.deleteCustomScheduledJob(reminderId)
+        reminderRepository.deleteById(reminderId)
+    }
 
     private fun validateTime(reminderDto: ReminderDto) {
         if(reminderDto.timeToActive.toInstant(ZoneOffset.UTC) < Instant.now()) {
