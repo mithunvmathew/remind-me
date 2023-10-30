@@ -1,9 +1,15 @@
 CREATE TABLE IF NOT EXISTS remind.user_data
 (
-    username          VARCHAR(255) PRIMARY KEY,
-    password          VARCHAR(255) NOT NULL,
-    created_at        TIMESTAMP DEFAULT NOW(),
-    updated_at        TIMESTAMP DEFAULT NOW()
+    username            VARCHAR(255) PRIMARY KEY,
+    password            VARCHAR(255) NOT NULL,
+    phone               VARCHAR(255) NULL,
+    morning_reminder    boolean,
+    evening_reminder    boolean,
+    remind_by_email     boolean,
+    remind_by_whatsapp  boolean,
+    is_verified         boolean,
+    created_at          TIMESTAMP DEFAULT NOW(),
+    updated_at          TIMESTAMP DEFAULT NOW()
 );
 
 CREATE OR REPLACE FUNCTION remind.method_get_updated_at() RETURNS TRIGGER

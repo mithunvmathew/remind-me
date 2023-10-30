@@ -21,4 +21,8 @@ sealed class BadRequestException(
     class InvalidDataException(message: String): BadRequestException(
         message = message
     )
+
+    class IllegalDataAccessException(message: String): BadRequestException(
+        message = message
+    )
 }

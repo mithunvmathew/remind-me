@@ -2,7 +2,7 @@ package com.mvm.remindme.controller
 
 import com.mvm.remindme.controller.dto.LoginRequest
 import com.mvm.remindme.controller.dto.LoginResponse
-import com.mvm.remindme.controller.dto.RegisterRequest
+import com.mvm.remindme.controller.dto.UserDto
 import com.mvm.remindme.error.BadRequestException
 import com.mvm.remindme.service.TokenService
 import com.mvm.remindme.service.UserService
@@ -24,7 +24,7 @@ class AuthenticationController(
     fun login(@RequestBody loginRequest: LoginRequest): LoginResponse {
         val user = userService.findById(loginRequest.email)
 
-        if (!tokenService.checkPassword(loginRequest.password, user.password)) {
+        if (!tokenService.checkPassword(loginRequest.password.trim(), user.password.trim())) {
             throw BadRequestException.PasswordNotMatchingException("Password not matching")
         }
         return LoginResponse(
@@ -33,12 +33,9 @@ class AuthenticationController(
     }
 
     @PostMapping("/register")
-    fun register(@RequestBody registerRequest: RegisterRequest): LoginResponse {
-            val savedUser = userService.save(registerRequest)
+    fun register(@RequestBody userDto: UserDto): LoginResponse {
+            val savedUser = userService.save(userDto)
             return LoginResponse(
                 accessToken = tokenService.createToken(savedUser))
-
-
-
     }
 }

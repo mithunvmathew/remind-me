@@ -1,5 +1,6 @@
 package com.mvm.remindme.service
 
+import com.mvm.remindme.error.BadRequestException
 import com.mvm.remindme.repository.model.User
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.security.oauth2.jwt.*
@@ -17,7 +18,7 @@ class TokenService(
         val jwsHeader = JwsHeader.with { "HS256" }.build()
         val claims = JwtClaimsSet.builder()
             .issuedAt(Instant.now())
-            .expiresAt(Instant.now().plus(30L, ChronoUnit.MINUTES))
+            .expiresAt(Instant.now().plus(10L, ChronoUnit.MINUTES))
             .subject(user.userName)
             .claim("userName", user.userName)
             .build()
@@ -35,7 +36,12 @@ class TokenService(
     }
 
     fun checkPassword(input: String, hash: String): Boolean {
-        return BCrypt.checkpw(input, hash)
+        try {
+            return BCrypt.checkpw(input, hash)
+        } catch (exception: Exception) {
+            throw BadRequestException.PasswordNotMatchingException("Password not matching")
+        }
+
     }
 
     fun hashBcrypt(input: String): String {

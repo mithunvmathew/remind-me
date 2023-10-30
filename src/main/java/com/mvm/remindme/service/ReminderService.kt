@@ -52,6 +52,14 @@ class ReminderService(
         reminderRepository.deleteById(reminderId)
     }
 
+    fun deleteAllReminders() {
+        val user = userRepository.findById(getAuthenticatedUser())
+        user.get().reminderSet?.map {
+            quartzJobService.deleteCustomScheduledJob(it.id)
+            reminderRepository.deleteById(it.id)
+        }
+    }
+
     private fun validateTime(reminderDto: ReminderDto) {
         if(reminderDto.timeToActive.toInstant(ZoneOffset.UTC) < Instant.now()) {
             throw InvalidDataException("Time to active must be a future time")
