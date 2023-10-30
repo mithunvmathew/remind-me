@@ -14,6 +14,8 @@ class UserDataMapper {
         phone = user.phone,
         morningReminder = user.morningReminder,
         eveningReminder = user.eveningReminder,
+        isRemindByEmail = user.isRemindByEmail,
+        isRemindByWhatsapp = user.isRemindByWhatsapp,
         isVerified = user.isVerified
     )
 
