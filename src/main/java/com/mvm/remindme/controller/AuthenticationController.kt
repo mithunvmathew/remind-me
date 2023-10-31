@@ -42,4 +42,10 @@ class AuthenticationController(
         userService.verifyEmail(verificationToken)
         return "Email verified Successfully"
     }
+
+    @GetMapping("/email/unsubscribe/{verificationToken}")
+    fun unsubscribeEmail(@PathVariable("verificationToken") verificationToken: String): String {
+        userService.unsubscribeEmail(verificationToken)
+        return "Email unsubscribed Successfully"
+    }
 }

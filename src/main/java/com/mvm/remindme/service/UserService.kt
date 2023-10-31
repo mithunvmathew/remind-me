@@ -26,7 +26,8 @@ class UserService(
             val user = userRepository.save(userDataMapper.mapToModel(request))
             emailService.sendEmailVerificationHtmlEmail(
                 verificationUrl = baseUrl + "auth/email/verify/" + user.verificationCode,
-                to = user.userName
+                to = user.userName,
+                unsubscribeUrl = baseUrl + "auth/email/unsubscribe/" + user.verificationCode,
             )
             user
         }
@@ -36,6 +37,12 @@ class UserService(
         val user = userRepository.findByVerificationCode(verificationToken)
             .orElseThrow { InvalidDataException("Invalid verification code") }
         userRepository.updateUserVerify(isVerified = true, username = user.userName)
+    }
+
+    fun unsubscribeEmail(verificationToken: String) {
+        val user = userRepository.findByVerificationCode(verificationToken)
+            .orElseThrow { InvalidDataException("Invalid Unsubscribe code") }
+        userRepository.updateUserUnsubscribe(isUnsubscribed = true, username = user.userName)
     }
 
     fun findLoggedInUser() = userDataMapper.mapToDto(

@@ -24,4 +24,11 @@ interface UserRepository: CrudRepository<User, String> {
             "WHERE u.userName = :username")
     fun updateUserVerify(@Param("isVerified") isVerified: Boolean?,@Param("username") username: String)
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE User u " +
+            "SET u.isUnsubscribed = :isUnsubscribed " +
+            "WHERE u.userName = :username")
+    fun updateUserUnsubscribe(@Param("isUnsubscribed") isUnsubscribed: Boolean?,@Param("username") username: String)
+
 }

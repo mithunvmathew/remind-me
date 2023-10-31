@@ -29,6 +29,7 @@ class UserDataMapper {
         isRemindByEmail = userDto.isRemindByEmail,
         isRemindByWhatsapp = userDto.isRemindByWhatsapp,
         isVerified = userDto.isVerified,
+        isUnsubscribed = false,
         verificationCode = generateVerificationCode(30),
     )
 

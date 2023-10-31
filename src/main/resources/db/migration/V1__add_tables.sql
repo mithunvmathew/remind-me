@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS remind.user_data
     remind_by_email     boolean,
     remind_by_whatsapp  boolean,
     is_verified         boolean,
+    is_unsubscribed     boolean,
     created_at          TIMESTAMP DEFAULT NOW(),
     updated_at          TIMESTAMP DEFAULT NOW()
 );

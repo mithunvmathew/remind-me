@@ -14,7 +14,7 @@ class HtmlTemplateRenderService(
 
     fun renderCustomReminderEmail(subject: String, activityTime: LocalDateTime): String {
 
-        val compiledTemplate: PebbleTemplate = pebbileEngine.getTemplate("templates/custom-reminder.html")
+        val compiledTemplate: PebbleTemplate = pebbileEngine.getTemplate("templates/custom-reminder_old.html")
 
         val context: MutableMap<String, Any> = HashMap()
         context["subject"] = subject
@@ -27,12 +27,13 @@ class HtmlTemplateRenderService(
         return writer.toString()
     }
 
-    fun renderEmailVerificationEmail(verificationUrl: String): String {
+    fun renderEmailVerificationEmail(verificationUrl: String, unsubscribeUrl: String): String {
 
         val compiledTemplate: PebbleTemplate = pebbileEngine.getTemplate("templates/email-verification.html")
 
         val context: MutableMap<String, Any> = HashMap()
         context["verificationUrl"] = verificationUrl
+        context["unsubscribeUrl"] = unsubscribeUrl
 
         val writer: Writer = StringWriter()
         compiledTemplate.evaluate(writer, context)
