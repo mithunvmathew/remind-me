@@ -6,6 +6,7 @@ import com.mvm.remindme.error.BadRequestException.InvalidDataException
 import com.mvm.remindme.error.BadRequestException.UserNotFoundException
 import com.mvm.remindme.repository.ReminderRepository
 import com.mvm.remindme.repository.UserRepository
+import com.mvm.remindme.repository.model.User
 import com.mvm.remindme.service.job.QuartzJobService
 import com.mvm.remindme.service.mapper.ReminderServiceMapper
 import com.mvm.remindme.utility.getAuthenticatedUser
@@ -27,6 +28,7 @@ class ReminderService(
         val user = if (userRepository.findById(userName).isPresent) {
             userRepository.findById(userName).get()
         } else throw UserNotFoundException("User $userName not found")
+        validateUser(user)
         validateTime(reminderRequest)
         val reminder = reminderRepository.save(reminderServiceMapper.mapToModel(reminderRequest, user))
         quartzJobService.createCustomReminderScheduleJob(reminder)
@@ -67,7 +69,7 @@ class ReminderService(
         if(reminderDto.timeToRemind < Instant.now()) {
             throw InvalidDataException("Time to remind must be a future time")
         }
-
     }
+    private fun validateUser(user: User) = if(user.isVerified == true)  true else throw UserNotFoundException("User email not verified.")
 
 }

@@ -15,7 +15,7 @@ class UserService(
     private val userDataMapper: UserDataMapper,
     private val reminderService: ReminderService,
     private val emailService: EmailService,
-    @Value("\${base.url}") var baseUrl: String,
+
 ) {
     fun findById(username: String): User = userRepository.findById(username)
         .orElseThrow { UserNotFoundException("User not found") }
@@ -24,11 +24,7 @@ class UserService(
         true -> throw EmailAlreadyExistException("Email already exist. Please try with another email")
         false -> {
             val user = userRepository.save(userDataMapper.mapToModel(request))
-            emailService.sendEmailVerificationHtmlEmail(
-                verificationUrl = baseUrl + "auth/email/verify/" + user.verificationCode,
-                to = user.userName,
-                unsubscribeUrl = baseUrl + "auth/email/unsubscribe/" + user.verificationCode,
-            )
+            emailService.sendEmailVerificationHtmlEmail(to = user.userName,)
             user
         }
     }

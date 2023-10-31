@@ -3,6 +3,7 @@ package com.mvm.remindme.service
 import com.mvm.remindme.repository.UserRepository
 import jakarta.mail.MessagingException
 import jakarta.mail.internet.MimeMessage
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
@@ -15,12 +16,16 @@ class EmailService(
     private val emailSender: JavaMailSender,
     private val htmlTemplateRenderService: HtmlTemplateRenderService,
     private val userRepository: UserRepository,
+    @Value("\${base.url}") var baseUrl: String,
 ) {
     fun sendTextEmail(recipientEmail: String, subject: String, activityTime: LocalDateTime) {
-        if (isLegallyAllowedToSendEmail(recipientEmail)) {
+        val user = userRepository.findById(recipientEmail).get()
+        if (user.isUnsubscribed == false) {
+            val unsubscribeUrl = baseUrl + "auth/email/unsubscribe/" + user.verificationCode
             val htmlContent = htmlTemplateRenderService.renderCustomReminderEmail(
                 subject = subject,
-                activityTime = activityTime
+                activityTime = activityTime,
+                unsubscribeUrl = unsubscribeUrl
             )
             val message = SimpleMailMessage()
             message.subject = subject
@@ -36,12 +41,15 @@ class EmailService(
 
     @Throws(MessagingException::class)
     fun sendCustomReminderHtmlEmail(to: String, subject: String, activityTime: LocalDateTime) {
-        if (isLegallyAllowedToSendEmail(to)) {
+        val user = userRepository.findById(to).get()
+        if (user.isUnsubscribed == false) {
+            val unsubscribeUrl = baseUrl + "auth/email/unsubscribe/" + user.verificationCode
             val message: MimeMessage = emailSender.createMimeMessage()
             val helper = MimeMessageHelper(message, true)
             val htmlContent = htmlTemplateRenderService.renderCustomReminderEmail(
                 subject = subject,
-                activityTime = activityTime
+                activityTime = activityTime,
+                unsubscribeUrl = unsubscribeUrl
             )
 
             helper.setTo(to)
@@ -56,13 +64,17 @@ class EmailService(
     }
 
     @Throws(MessagingException::class)
-    fun sendEmailVerificationHtmlEmail(to: String, verificationUrl: String, unsubscribeUrl: String) {
-        if (isLegallyAllowedToSendEmail(to)) {
+    fun sendEmailVerificationHtmlEmail(to: String) {
+        val user = userRepository.findById(to).get()
+        if (user.isUnsubscribed == false) {
+            val verificationUrl = baseUrl + "auth/email/verify/" + user.verificationCode
+            val unsubscribeUrl = baseUrl + "auth/email/unsubscribe/" + user.verificationCode
             val message: MimeMessage = emailSender.createMimeMessage()
             val helper = MimeMessageHelper(message, true)
             val htmlContent =
                 htmlTemplateRenderService.renderEmailVerificationEmail(
-                    verificationUrl = verificationUrl, unsubscribeUrl = unsubscribeUrl)
+                    verificationUrl = verificationUrl, unsubscribeUrl = unsubscribeUrl
+                )
 
             helper.setTo(to)
             helper.setSubject("RemindMe: Email Verification")
@@ -74,10 +86,5 @@ class EmailService(
             println("user $to is unsubscribed.")
         }
     }
-
-    private fun isLegallyAllowedToSendEmail(recipientEmail: String) = userRepository.findById(
-        recipientEmail
-    ).get().isUnsubscribed != true
-
 
 }
