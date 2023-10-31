@@ -1,6 +1,5 @@
 package com.mvm.remindme.service
 
-import com.mvm.remindme.repository.model.Reminder
 import io.pebbletemplates.pebble.PebbleEngine
 import io.pebbletemplates.pebble.template.PebbleTemplate
 import org.springframework.stereotype.Service

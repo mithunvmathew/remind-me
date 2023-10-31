@@ -4,9 +4,7 @@ import com.mvm.remindme.controller.dto.UserDto
 import com.mvm.remindme.repository.model.User
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Component
-import java.time.LocalDateTime
-import java.util.Random
-import java.util.UUID
+import java.util.*
 
 @Component
 class UserDataMapper {

@@ -22,7 +22,6 @@ class EmailService(
         val message = SimpleMailMessage()
         message.subject = subject
         message.text = htmlContent
-        message
         message.setTo(recipientEmail)
 
         emailSender.send(message)
