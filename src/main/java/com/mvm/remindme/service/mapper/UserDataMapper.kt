@@ -4,6 +4,9 @@ import com.mvm.remindme.controller.dto.UserDto
 import com.mvm.remindme.repository.model.User
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Component
+import java.time.LocalDateTime
+import java.util.Random
+import java.util.UUID
 
 @Component
 class UserDataMapper {
@@ -27,6 +30,14 @@ class UserDataMapper {
         eveningReminder = userDto.eveningReminder,
         isRemindByEmail = userDto.isRemindByEmail,
         isRemindByWhatsapp = userDto.isRemindByWhatsapp,
-        isVerified = userDto.isVerified
+        isVerified = userDto.isVerified,
+        verificationCode = generateVerificationCode(30),
     )
+
+    fun generateVerificationCode(length: Int): String {
+        val charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+        return (1..length)
+            .map { charset[Random().nextInt(0, charset.length)] }
+            .joinToString("")
+    }
 }

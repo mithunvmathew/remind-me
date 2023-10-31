@@ -28,6 +28,21 @@ class HtmlTemplateRenderService(
         return writer.toString()
     }
 
+    fun renderEmailVerificationEmail(verificationUrl: String): String {
+
+        val compiledTemplate: PebbleTemplate = pebbileEngine.getTemplate("templates/email-verification.html")
+
+        val context: MutableMap<String, Any> = HashMap()
+        context["verificationUrl"] = verificationUrl
+
+        val writer: Writer = StringWriter()
+        compiledTemplate.evaluate(writer, context)
+
+        return writer.toString()
+    }
+
+
+
     private fun getTime(activityTime: LocalDateTime) =
         activityTime.hour.toString() + "." + activityTime.minute + "." + activityTime.second
 

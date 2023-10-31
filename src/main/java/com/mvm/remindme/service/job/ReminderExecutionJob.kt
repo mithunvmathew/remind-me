@@ -17,7 +17,7 @@ class ReminderExecutionJob(
         val recipient = jobDataMap["recipient"].toString()
         val activityTime = jobDataMap["activityTime"]
 
-        emailService.sendHtmlEmail(to = recipient, subject = message, activityTime = activityTime as LocalDateTime   )
+        emailService.sendCustomReminderHtmlEmail(to = recipient, subject = message, activityTime = activityTime as LocalDateTime   )
         println("Email sending job started with message $message")
     }
 }

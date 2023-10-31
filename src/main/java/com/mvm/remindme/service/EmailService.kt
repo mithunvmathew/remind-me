@@ -30,7 +30,7 @@ class EmailService(
     }
 
         @Throws(MessagingException::class)
-        fun sendHtmlEmail(to: String, subject: String, activityTime: LocalDateTime) {
+        fun sendCustomReminderHtmlEmail(to: String, subject: String, activityTime: LocalDateTime) {
             val message: MimeMessage = emailSender.createMimeMessage()
             val helper = MimeMessageHelper(message, true)
             val htmlContent = htmlTemplateRenderService.renderCustomReminderEmail(subject = subject,
@@ -43,4 +43,20 @@ class EmailService(
             // Send the email
             emailSender.send(message)
         }
+
+        @Throws(MessagingException::class)
+        fun sendEmailVerificationHtmlEmail(to: String, verificationUrl: String) {
+            val message: MimeMessage = emailSender.createMimeMessage()
+            val helper = MimeMessageHelper(message, true)
+            val htmlContent = htmlTemplateRenderService.renderEmailVerificationEmail(verificationUrl = verificationUrl)
+
+            helper.setTo(to)
+            helper.setSubject("RemindMe: Email Verification")
+            helper.setText(htmlContent, true) // true indicates HTML content
+
+            // Send the email
+            emailSender.send(message)
+        }
+
+
 }

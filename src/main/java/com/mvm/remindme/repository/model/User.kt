@@ -29,9 +29,10 @@ class User(
     @Column(name = "is_verified")
     val isVerified: Boolean?,
 
+    @Column(name = "verification_code")
+    val verificationCode: String? = null,
+
     @OneToMany(mappedBy="user", cascade = [CascadeType.MERGE, CascadeType.PERSIST,CascadeType.REMOVE])
     val reminderSet : Set<Reminder>? = null
-) {
-
-}
+)
 

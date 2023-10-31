@@ -6,10 +6,8 @@ import com.mvm.remindme.controller.dto.UserDto
 import com.mvm.remindme.error.BadRequestException
 import com.mvm.remindme.service.TokenService
 import com.mvm.remindme.service.UserService
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
 
 @RestController
@@ -37,5 +35,11 @@ class AuthenticationController(
             val savedUser = userService.save(userDto)
             return LoginResponse(
                 accessToken = tokenService.createToken(savedUser))
+    }
+
+    @GetMapping("/email/verify/{verificationToken}")
+    fun verifyEmail(@PathVariable("verificationToken") verificationToken: String): String {
+        val savedUser = userService.verifyEmail(verificationToken)
+        return "Email verified Successfully"
     }
 }
