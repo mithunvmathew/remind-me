@@ -1,0 +1,227 @@
+{
+	"info": {
+		"_postman_id": "d58336fb-ca38-42ca-af9f-1f45c955eeef",
+		"name": "RemindMe",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "226468",
+		"_collection_link": "https://winter-resonance-263312.postman.co/workspace/Miths_workspace~de47626d-24e0-4a89-b5cf-baf7f963e8b0/collection/226468-d58336fb-ca38-42ca-af9f-1f45c955eeef?action=share&source=collection_link&creator=226468"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"mathewmithun851@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"mathewmithun851@gmail.com\",\r\n  \"password\": \"123456789\",\r\n  \"phone\": \"56565656\",\r\n  \"morningReminder\": true,\r\n  \"eveningReminder\": false,\r\n  \"isRemindByEmail\": true\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXRoZXdtaXRodW44NUBnbWFpbC5jb20iLCJleHAiOjE2OTg2NDkzMzksInVzZXJOYW1lIjoibWF0aGV3bWl0aHVuODVAZ21haWwuY29tIiwiaWF0IjoxNjk4NjQ4NzM5fQ.brrve-QIRrlM94kIpRrDEn5Wt4sIDd8lh5DzA0Jty3g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"mathewmithun85@gmail.com\",\r\n  \"password\": \"1234\",\r\n  \"phone\": \"999999998\",\r\n  \"morningReminder\": true,\r\n  \"eveningReminder\": false,\r\n  \"isRemindByEmail\": true\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateReminder",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXRoZXdtaXRodW44NTFAZ21haWwuY29tIiwiZXhwIjoxNjk4NzM4ODE2LCJ1c2VyTmFtZSI6Im1hdGhld21pdGh1bjg1MUBnbWFpbC5jb20iLCJpYXQiOjE2OTg3MzgyMTZ9.VOVfu1KZK_dNaWOvc-54ByBn5rb4F1tNZShsTrnKHxY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"subject\": \"my unsubscibe test2\",\r\n  \"timeToActive\":  \"2023-10-31T13:59:54\",\r\n  \"timeToRemind\":  \"2023-10-31T08:35:54+01:00\",\r\n  \"morningReminder\": true,\r\n  \"eveningReminder\": true,\r\n  \"isActive\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/reminder/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"reminder",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXRoZXdtaXRodW44NUBnbWFpbC5jb20iLCJleHAiOjE2OTg1ODcwNDcsInVzZXJOYW1lIjoibWF0aGV3bWl0aHVuODVAZ21haWwuY29tIiwiaWF0IjoxNjk4NTg1MjQ3fQ.oVe6w4X5nq2cfw7GBCGdz97BGG5ajIH71lvPSO9QtD8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/reminder/8805de13-a948-43db-b2f2-76dd17ba8401",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"reminder",
+						"8805de13-a948-43db-b2f2-76dd17ba8401"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXRoZXdtaXRodW44NUBnbWFpbC5jb20iLCJleHAiOjE2OTg3MzYxODIsInVzZXJOYW1lIjoibWF0aGV3bWl0aHVuODVAZ21haWwuY29tIiwiaWF0IjoxNjk4NzM1NTgyfQ.AFTeSB06Sy0cVRYpoQ_hpBL4QGNmGtsTxHC-047suII",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
